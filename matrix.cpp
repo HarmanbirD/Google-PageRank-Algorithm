@@ -3,6 +3,7 @@
 //
 
 #include <limits>
+#include <iostream>
 #include "matrix.hpp"
 
 matrix::matrix()
@@ -42,24 +43,44 @@ matrix::matrix(double mat_array[])
         throw std::invalid_argument("array size is not a perfect square");
     }
 
-    matrix_array = new double[size * size];
+    matrix_array = new double[size];
 
-    for (int i = 0; i < size; ++i)
+    for (int i = 0; i < sqrt(size); ++i)
     {
-        for (int j = 0; j < size; ++j)
+        for (int j = 0; j < sqrt(size); ++j)
         {
-            matrix_array[index(i, j)] = mat_array[i * j];
+            matrix_array[index(i, j)] = mat_array[i + j];
         }
     }
 }
 
 void matrix::set_value(int row, int column, double value)
 {
+    if(row < 0 || column < 0)
+    {
+        throw std::invalid_argument("row or column cannot be 0");
+    }
+
+    if(row >= m_length || column >= m_width)
+    {
+        throw std::invalid_argument("row or column index have to be in the array");
+    }
+
     matrix_array[index(row, column)] = value;
 }
 
 double matrix::get_value(int row, int column) const
 {
+    if(row < 0 || column < 0)
+    {
+        throw std::invalid_argument("row or column cannot be 0");
+    }
+
+    if(row >= m_length || column >= m_width)
+    {
+        throw std::invalid_argument("row or column index have to be in the array");
+    }
+
     return matrix_array[index(row, column)];
 }
 
@@ -119,47 +140,82 @@ bool operator!=(const matrix& hs, const matrix& rhs)
 
 matrix operator+(matrix hs, const matrix rhs)
 {
-
+    hs += rhs;
+    return hs;
 }
 
 matrix operator-(matrix hs, const matrix rhs)
 {
-
+    hs -= rhs;
+    return hs;
 }
 
 matrix operator*(matrix hs, const matrix rhs)
 {
-
+    hs *= rhs;
+    return hs;
 }
 
 matrix& matrix::operator++()
 {
+    for (int i = 0; i < m_length; i++)
+    {
+        for (int j = 0; j < m_width; j++)
+        {
+            matrix_array[index(i, j)] += 1.0;
+        }
+    }
     return *this;
 }
 
 matrix matrix::operator++(int)
 {
-
+    matrix tmp{*this};
+    operator++();
+    return tmp;
 }
 
 matrix& matrix::operator--()
 {
+    for (int i = 0; i < m_length; i++)
+    {
+        for (int j = 0; j < m_width; j++)
+        {
+            matrix_array[index(i, j)] -= 1.0;
+        }
+    }
     return *this;
 }
 
 matrix matrix::operator--(int)
 {
-
+    matrix tmp{*this};
+    operator--();
+    return tmp;
 }
 
 matrix& matrix::operator+=(const matrix& rhs)
 {
-
+    for (int i = 0; i < m_length; i++)
+    {
+        for (int j = 0; j < m_width; j++)
+        {
+            this->matrix_array[index(i, j)] += rhs.matrix_array[index(i, j)];
+        }
+    }
+    return *this;
 }
 
 matrix& matrix::operator-=(const matrix& rhs)
 {
-
+    for (int i = 0; i < m_length; i++)
+    {
+        for (int j = 0; j < m_width; j++)
+        {
+            this->matrix_array[index(i, j)] -= rhs.matrix_array[index(i, j)];
+        }
+    }
+    return *this;
 }
 
 matrix& matrix::operator*=(const matrix& rhs)
@@ -167,7 +223,7 @@ matrix& matrix::operator*=(const matrix& rhs)
 
 }
 
-matrix matrix::operator=(matrix other)
+matrix& matrix::operator=(matrix other)
 {
     swap(*this, other);
     return *this;
@@ -179,4 +235,15 @@ void swap(matrix& first, matrix& second)
     swap(first.m_length, second.m_length);
     swap(first.m_width, second.m_width);
     swap(first.matrix_array, second.matrix_array);
+}
+
+std::ostream &operator<<(std::ostream &os, const matrix &matrix) {
+    for (int i = 0; i < matrix.m_length; i++)
+    {
+        for (int j = 0; j < matrix.m_width; j++)
+        {
+            os << matrix.matrix_array[matrix.index(i, j)] << " ";
+        }
+        os << "\n";
+    }
 }

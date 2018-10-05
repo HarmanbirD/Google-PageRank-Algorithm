@@ -25,6 +25,7 @@ class matrix {
         friend matrix operator-(matrix hs, const matrix rhs);
         friend matrix operator*(matrix hs, const matrix rhs);
         friend void swap(matrix& first, matrix& second);
+        friend std::ostream &operator<<(std::ostream &os, const matrix &matrix);
         matrix& operator++();
         matrix operator++(int);
         matrix& operator--();
@@ -32,7 +33,7 @@ class matrix {
         matrix& operator+=(const matrix& rhs);
         matrix& operator-=(const matrix& rhs);
         matrix& operator*=(const matrix& rhs);
-        matrix operator=(matrix other);
+        matrix& operator=(matrix other);
 
 
 private:
@@ -41,6 +42,7 @@ private:
         double * matrix_array;
         size_t index(int x, int y) const;
         bool is_perfect_square(int x);
+
 };
 
 
