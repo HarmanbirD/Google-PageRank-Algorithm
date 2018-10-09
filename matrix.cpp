@@ -34,25 +34,37 @@ matrix::matrix(int r, int c)
     }
 }
 
-matrix::matrix(double mat_array[])
+matrix::matrix(double mat_array[], int capacity)
 {
-    int size = sizeof(mat_array) / sizeof(mat_array[0]);
 
-    if (!is_perfect_square(size))
+    if (!is_perfect_square(capacity))
     {
         throw std::invalid_argument("array size is not a perfect square");
     }
 
-    matrix_array = new double[size];
+    int size = sqrt(capacity);
 
-    for (int i = 0; i < sqrt(size); ++i)
+    matrix_array = new double[capacity];
+    m_length = size;
+    m_width  = size;
+
+    for (int i = 0; i < size; ++i)
     {
-        for (int j = 0; j < sqrt(size); ++j)
+        for (int j = 0; j < size; ++j)
         {
-            matrix_array[index(i, j)] = mat_array[i + j];
+            matrix_array[index(i, j)] = mat_array[index(i, j)];
         }
     }
 }
+
+matrix::matrix(const matrix& matrix_t)
+    :   m_length{matrix_t.m_length},
+        m_width{matrix_t.m_width},
+        matrix_array{new double[m_length * m_width] {}}
+{
+    std::copy(matrix_t.matrix_array, matrix_t.matrix_array + (m_length * m_width), matrix_array);
+}
+
 
 void matrix::set_value(int row, int column, double value)
 {
@@ -95,21 +107,24 @@ void matrix::clear()
     }
 }
 
-size_t matrix::index(int x, int y) const
+inline int matrix::index(int x, int y) const
 {
-    return m_width * y + x;
+    return m_width * x + y;
 }
 
-bool matrix::is_perfect_square(int x)
+bool matrix::is_perfect_square(int x) const
 {
-    int squared = sqrt(x);
+    double squared = sqrt(x);
 
     return ((squared - floor(squared)) == 0);
 }
 
 matrix::~matrix()
 {
-    delete[] matrix_array;
+    if (matrix_array != nullptr)
+    {
+        delete[] matrix_array;
+    }
 }
 
 bool operator==(const matrix& hs, const matrix& rhs)
@@ -140,20 +155,36 @@ bool operator!=(const matrix& hs, const matrix& rhs)
 
 matrix operator+(matrix hs, const matrix rhs)
 {
-    hs += rhs;
-    return hs;
+    if (hs.m_length != rhs.m_length || hs.m_width != rhs.m_width)
+    {
+        throw std::invalid_argument("matrices have to be the same size");
+    }
+
+    matrix temp = matrix(hs);
+
+    temp += rhs;
+    return temp;
 }
 
 matrix operator-(matrix hs, const matrix rhs)
 {
-    hs -= rhs;
-    return hs;
+    if (hs.m_length != rhs.m_length || hs.m_width != rhs.m_width)
+    {
+        throw std::invalid_argument("matrices have to be the same size");
+    }
+
+    matrix temp = matrix(hs);
+
+    temp -= rhs;
+    return temp;
 }
 
 matrix operator*(matrix hs, const matrix rhs)
 {
-    hs *= rhs;
-    return hs;
+    matrix temp = matrix(hs);
+
+    temp *= rhs;
+    return temp;
 }
 
 matrix& matrix::operator++()
@@ -196,6 +227,11 @@ matrix matrix::operator--(int)
 
 matrix& matrix::operator+=(const matrix& rhs)
 {
+    if (m_length != rhs.m_length || m_width != rhs.m_width)
+    {
+        throw std::invalid_argument("matrices have to be the same size");
+    }
+
     for (int i = 0; i < m_length; i++)
     {
         for (int j = 0; j < m_width; j++)
@@ -208,6 +244,11 @@ matrix& matrix::operator+=(const matrix& rhs)
 
 matrix& matrix::operator-=(const matrix& rhs)
 {
+    if (m_length != rhs.m_length || m_width != rhs.m_width)
+    {
+        throw std::invalid_argument("matrices have to be the same size");
+    }
+
     for (int i = 0; i < m_length; i++)
     {
         for (int j = 0; j < m_width; j++)
@@ -220,7 +261,31 @@ matrix& matrix::operator-=(const matrix& rhs)
 
 matrix& matrix::operator*=(const matrix& rhs)
 {
+    if (this -> m_width != rhs.m_length)
+    {
+        throw std::invalid_argument("number of columns of first matrix does not equal number of rows in second matrix");
+    }
 
+    auto * new_matrix = new double[this -> m_length * rhs.m_width] {0.0};
+
+    for (int i = 0; i < this -> m_length; ++i)
+    {
+        for (int j = 0; j < rhs.m_width; ++j)
+        {
+            for (int k = 0; k < this -> m_width; ++k)
+            {
+//                double first = this->matrix_array[index(i, k)];
+//                double second = rhs.matrix_array[rhs.index(k, j)];
+                new_matrix[index(i, j)] += (this->matrix_array[index(i, k)] * rhs.matrix_array[rhs.index(k, j)]);
+            }
+        }
+    }
+    delete[] matrix_array;
+    matrix_array = new double[this -> m_length * rhs.m_width];
+    m_width = rhs.m_width;
+    std::copy(new_matrix, new_matrix + (this -> m_length * rhs.m_width), matrix_array);
+    delete[] new_matrix;
+    return *this;
 }
 
 matrix& matrix::operator=(matrix other)
@@ -238,12 +303,13 @@ void swap(matrix& first, matrix& second)
 }
 
 std::ostream &operator<<(std::ostream &os, const matrix &matrix) {
-    for (int i = 0; i < matrix.m_length; i++)
+    for (int i = 0; i < matrix.m_length; ++i)
     {
-        for (int j = 0; j < matrix.m_width; j++)
+        for (int j = 0; j < matrix.m_width; ++j)
         {
             os << matrix.matrix_array[matrix.index(i, j)] << " ";
         }
-        os << "\n";
+        os << std::endl;
     }
+    return os;
 }

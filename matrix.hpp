@@ -14,7 +14,8 @@ class matrix {
         matrix();
         matrix(int n);
         matrix(int r, int c);
-        matrix(double mat_array[]);
+        matrix(double mat_array[], int capacity);
+        matrix(const matrix& matrix_t);
         void set_value(int row, int column, double value);
         double get_value(int row, int column) const;
         void clear();
@@ -40,8 +41,8 @@ private:
         int m_length;
         int m_width;
         double * matrix_array;
-        size_t index(int x, int y) const;
-        bool is_perfect_square(int x);
+        inline int index(int x, int y) const;
+        bool is_perfect_square(int x) const;
 
 };
 
