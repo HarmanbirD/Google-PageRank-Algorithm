@@ -16,6 +16,7 @@ class matrix {
         matrix(int r, int c);
         matrix(double mat_array[], int capacity);
         matrix(const matrix& matrix_t);
+        matrix(int r, int c, double dafault_value);
         void set_value(int row, int column, double value);
         double get_value(int row, int column) const;
         void clear();
@@ -49,6 +50,7 @@ class matrix {
 
     protected:
         int get_m_width() const;
+        double *getMatrix_array() const;
         int get_m_length() const;
         inline int index(int x, int y) const;
 

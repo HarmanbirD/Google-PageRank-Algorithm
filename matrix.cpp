@@ -65,6 +65,19 @@ matrix::matrix(const matrix& matrix_t)
     std::copy(matrix_t.matrix_array, matrix_t.matrix_array + (m_length * m_width), matrix_array);
 }
 
+matrix::matrix(int r, int c, double dafault_value)
+        :   m_length{r},
+            m_width{c},
+            matrix_array{new double[r * c] {}}
+{
+    if (r <= 0 || c <= 0)
+    {
+        throw std::invalid_argument("received negative or zero value");
+    }
+
+    std::fill_n(matrix_array, r * c, dafault_value);
+}
+
 
 void matrix::set_value(int row, int column, double value)
 {
@@ -359,4 +372,8 @@ void matrix::add_columns()
             }
         }
     }
+}
+
+double *matrix::getMatrix_array() const {
+    return matrix_array;
 }
