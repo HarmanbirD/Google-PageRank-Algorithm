@@ -13,7 +13,7 @@ class connectivity_matrix : public matrix {
         void importance();
 
 
-    private:
+private:
         static constexpr double p = 0.85;
 };
 

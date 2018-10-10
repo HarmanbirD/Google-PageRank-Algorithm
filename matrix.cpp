@@ -377,3 +377,29 @@ void matrix::add_columns()
 double *matrix::getMatrix_array() const {
     return matrix_array;
 }
+
+void matrix::make_percentage()
+{
+    for (int i = 0; i < m_length; ++i)
+    {
+        for (int j = 0; j < m_width; ++j)
+        {
+            double temp = get_value(i, j) * 100;
+            temp = roundf(temp * 100) / 100;
+            set_value(i, j, temp);
+        }
+    }
+}
+
+void matrix::print_result()
+{
+    char current_alpha = 'A';
+
+    for (int i = 0; i < m_length; ++i)
+    {
+        for (int j = 0; j < m_width; ++j)
+        {
+            std::cout << "Page " << current_alpha++ << ": " << get_value(i, j) << "%\n";
+        }
+    }
+}

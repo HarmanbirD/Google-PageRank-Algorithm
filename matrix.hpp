@@ -5,7 +5,7 @@
 #pragma once
 
 #include <stdexcept>
-#include <math.h>
+#include <cmath>
 #include <cstdio>
 #include <MacTypes.h>
 
@@ -23,9 +23,9 @@ class matrix {
         ~matrix();
         friend bool operator==(const matrix& hs, const matrix& rhs);
         friend bool operator!=(const matrix& hs, const matrix& rhs);
-        friend matrix operator+(matrix hs, const matrix rhs);
-        friend matrix operator-(matrix hs, const matrix rhs);
-        friend matrix operator*(matrix hs, const matrix rhs);
+        friend matrix operator+(matrix hs, matrix rhs);
+        friend matrix operator-(matrix hs, matrix rhs);
+        friend matrix operator*(matrix hs, matrix rhs);
         friend void swap(matrix& first, matrix& second);
         friend std::ostream &operator<<(std::ostream &os, const matrix &matrix);
         matrix& operator++();
@@ -38,9 +38,10 @@ class matrix {
         matrix& operator=(matrix other);
         void multiply_constant(double value);
         void add_columns();
+        void make_percentage();
+        void print_result();
 
-
-    private:
+private:
         int m_length;
         int m_width;
         double * matrix_array;
@@ -53,8 +54,6 @@ class matrix {
         double *getMatrix_array() const;
         int get_m_length() const;
         inline int index(int x, int y) const;
-
-
 };
 
 

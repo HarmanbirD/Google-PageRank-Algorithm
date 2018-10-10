@@ -50,9 +50,7 @@ void connectivity_matrix::importance()
 
     rank.add_columns();
 
-    std::cout << rank;
+    rank.make_percentage();
 
-
+    rank.print_result();
 }
-
-
