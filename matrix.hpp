@@ -17,7 +17,7 @@ constexpr int percentage{100};
 class matrix {
     public:
         matrix();
-        matrix(int n);
+        explicit matrix(int n);
         matrix(int r, int c);
         matrix(double mat_array[], int capacity);
         matrix(const matrix& matrix_t);
