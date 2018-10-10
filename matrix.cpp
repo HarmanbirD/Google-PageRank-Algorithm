@@ -9,13 +9,13 @@
 matrix::matrix()
     :   m_length{1},
         m_width{1},
-        matrix_array{new double[1 * 1] {}}
+        matrix_array{new double[1 * 1] {0.0}}
 {}
 
 matrix::matrix(int n)
     :   m_length{n},
         m_width{n},
-        matrix_array{new double[n * n] {}}
+        matrix_array{new double[n * n] {0.0}}
 {
     if (n <= 0)
     {
@@ -26,7 +26,7 @@ matrix::matrix(int n)
 matrix::matrix(int r, int c)
     :   m_length{r},
         m_width{c},
-        matrix_array{new double[r * c] {}}
+        matrix_array{new double[r * c] {0.0}}
 {
     if (r <= 0 || c <= 0)
     {
@@ -70,7 +70,7 @@ void matrix::set_value(int row, int column, double value)
 {
     if(row < 0 || column < 0)
     {
-        throw std::invalid_argument("row or column cannot be 0");
+        throw std::invalid_argument("row or column cannot be less than 0");
     }
 
     if(row >= m_length || column >= m_width)
@@ -85,7 +85,7 @@ double matrix::get_value(int row, int column) const
 {
     if(row < 0 || column < 0)
     {
-        throw std::invalid_argument("row or column cannot be 0");
+        throw std::invalid_argument("row or column cannot be less than 0");
     }
 
     if(row >= m_length || column >= m_width)
@@ -107,7 +107,7 @@ void matrix::clear()
     }
 }
 
-inline int matrix::index(int x, int y) const
+int matrix::index(int x, int y) const
 {
     return m_width * x + y;
 }
@@ -121,10 +121,7 @@ bool matrix::is_perfect_square(int x) const
 
 matrix::~matrix()
 {
-    if (matrix_array != nullptr)
-    {
         delete[] matrix_array;
-    }
 }
 
 bool operator==(const matrix& hs, const matrix& rhs)
@@ -274,9 +271,9 @@ matrix& matrix::operator*=(const matrix& rhs)
         {
             for (int k = 0; k < this -> m_width; ++k)
             {
-//                double first = this->matrix_array[index(i, k)];
-//                double second = rhs.matrix_array[rhs.index(k, j)];
-                new_matrix[index(i, j)] += (this->matrix_array[index(i, k)] * rhs.matrix_array[rhs.index(k, j)]);
+                double first = this->matrix_array[index(i, k)];
+                double second = rhs.matrix_array[rhs.index(k, j)];
+                new_matrix[rhs.index(i, j)] += (first * second);
             }
         }
     }
@@ -302,7 +299,8 @@ void swap(matrix& first, matrix& second)
     swap(first.matrix_array, second.matrix_array);
 }
 
-std::ostream &operator<<(std::ostream &os, const matrix &matrix) {
+std::ostream &operator<<(std::ostream &os, const matrix &matrix)
+{
     for (int i = 0; i < matrix.m_length; ++i)
     {
         for (int j = 0; j < matrix.m_width; ++j)
@@ -312,4 +310,53 @@ std::ostream &operator<<(std::ostream &os, const matrix &matrix) {
         os << std::endl;
     }
     return os;
+}
+
+int matrix::get_m_length() const
+{
+    return m_length;
+}
+
+int matrix::get_m_width() const
+{
+    return m_width;
+}
+
+void matrix::multiply_constant(double value)
+{
+    for (int i = 0; i < m_length; ++i)
+    {
+        for (int j = 0; j < m_width; ++j)
+        {
+            set_value(i, j, get_value(i, j) * value);
+        }
+    }
+}
+
+void matrix::add_columns()
+{
+    for (int i = 0; i < m_width; ++i)
+    {
+        double sum = 0;
+        for (int j = 0; j < m_length; ++j)
+        {
+            sum += get_value(j, i);
+        }
+        if (sum == 0)
+        {
+            for (int j = 0; j < m_length; ++j) {
+                double temp = 1.0 / m_length;
+                set_value(j, i, temp);
+            }
+        } else {
+            for (int j = 0; j < m_length; ++j) {
+                double temp = get_value(j, i);
+                if (temp == 0) {
+                    set_value(j, i, 0.0);
+                } else {
+                    set_value(j, i, temp / sum);
+                }
+            }
+        }
+    }
 }

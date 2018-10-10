@@ -35,14 +35,23 @@ class matrix {
         matrix& operator-=(const matrix& rhs);
         matrix& operator*=(const matrix& rhs);
         matrix& operator=(matrix other);
+        void multiply_constant(double value);
+        void add_columns();
 
 
-private:
+    private:
         int m_length;
         int m_width;
         double * matrix_array;
-        inline int index(int x, int y) const;
+
         bool is_perfect_square(int x) const;
+
+
+    protected:
+        int get_m_width() const;
+        int get_m_length() const;
+        inline int index(int x, int y) const;
+
 
 };
 
