@@ -4,6 +4,7 @@
 
 #include <limits>
 #include <iostream>
+#include <iomanip>
 #include "matrix.hpp"
 
 matrix::matrix()
@@ -399,7 +400,7 @@ void matrix::print_result()
     {
         for (int j = 0; j < m_width; ++j)
         {
-            std::cout << "Page " << current_alpha++ << ": " << get_value(i, j) << "%\n";
+            std::cout << "Page " << current_alpha++ << ": " << std::setw(5) << std::fixed << std::setprecision(2) << get_value(i, j) << "%\n";
         }
     }
 }

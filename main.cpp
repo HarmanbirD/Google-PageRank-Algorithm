@@ -7,7 +7,7 @@
 int main()
 {
     std::ifstream myfile;
-    myfile.open("../matrix_test.txt");
+    myfile.open("../connectivity.txt");
     if (!myfile) {
         std::cerr << "unable to open file";
         exit(1);
