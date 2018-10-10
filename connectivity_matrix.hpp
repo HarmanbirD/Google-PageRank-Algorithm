@@ -6,15 +6,14 @@
 
 #pragma once
 
+constexpr double p{0.85};
+
 class connectivity_matrix : public matrix {
     public:
         connectivity_matrix();
         connectivity_matrix(double * matrix_array, int size);
         void importance();
 
-
-private:
-        static constexpr double p = 0.85;
 };
 
 

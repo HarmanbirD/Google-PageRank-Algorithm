@@ -40,10 +40,13 @@ void connectivity_matrix::importance()
     M = S + Q;
 
     matrix rank(m_length, 1, 1);
+    matrix test(m_length, 1, 2);
+    matrix temp;
 
-    for (int i = 0; i < 10000; ++i)
+    while (rank != test)
     {
-        matrix temp(M);
+        test = rank;
+        temp = M;
         temp *= rank;
         rank = temp;
     }

@@ -8,6 +8,11 @@
 #include <cmath>
 #include <cstdio>
 #include <MacTypes.h>
+#include <limits>
+#include <iostream>
+#include <iomanip>
+
+constexpr int percentage{100};
 
 class matrix {
     public:
@@ -16,7 +21,7 @@ class matrix {
         matrix(int r, int c);
         matrix(double mat_array[], int capacity);
         matrix(const matrix& matrix_t);
-        matrix(int r, int c, double dafault_value);
+        matrix(int r, int c, double default_value);
         void set_value(int row, int column, double value);
         double get_value(int row, int column) const;
         void clear();

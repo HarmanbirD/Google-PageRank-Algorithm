@@ -2,11 +2,11 @@
 // Created by Harmanbir Dhillon on 2018-10-01.
 //
 
-#include <limits>
-#include <iostream>
-#include <iomanip>
 #include "matrix.hpp"
 
+// default constructor
+// Sets m_length and m_width to 1
+// Creates matrix_array of size 1, initialized to 0.0
 matrix::matrix()
     :   m_length{1},
         m_width{1},
@@ -66,7 +66,7 @@ matrix::matrix(const matrix& matrix_t)
     std::copy(matrix_t.matrix_array, matrix_t.matrix_array + (m_length * m_width), matrix_array);
 }
 
-matrix::matrix(int r, int c, double dafault_value)
+matrix::matrix(int r, int c, double default_value)
         :   m_length{r},
             m_width{c},
             matrix_array{new double[r * c] {}}
@@ -76,7 +76,7 @@ matrix::matrix(int r, int c, double dafault_value)
         throw std::invalid_argument("received negative or zero value");
     }
 
-    std::fill_n(matrix_array, r * c, dafault_value);
+    std::fill_n(matrix_array, r * c, default_value);
 }
 
 
@@ -149,7 +149,7 @@ bool operator==(const matrix& hs, const matrix& rhs)
     {
         for (int j = 0; j < hs.m_width; ++j)
         {
-            double difference = hs.matrix_array[hs.index(i, j)] = rhs.matrix_array[hs.index(i, j)];
+            double difference = hs.matrix_array[hs.index(i, j)] - rhs.matrix_array[hs.index(i, j)];
             if (!(difference) <= std::numeric_limits<double>::epsilon() * fabs(hs.matrix_array[hs.index(i, j)]))
             {
                 return false;
@@ -385,8 +385,8 @@ void matrix::make_percentage()
     {
         for (int j = 0; j < m_width; ++j)
         {
-            double temp = get_value(i, j) * 100;
-            temp = roundf(temp * 100) / 100;
+            double temp = get_value(i, j) * percentage;
+            temp = roundf(temp * percentage) / percentage;
             set_value(i, j, temp);
         }
     }
