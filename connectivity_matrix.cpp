@@ -68,16 +68,12 @@ matrix connectivity_matrix::transition(const matrix stochastic) {
 // performs the markov_process on the transition matrix passed in
 void connectivity_matrix::markov_process(const matrix transition) {
     int m_length = get_m_length();
+    // creates matrix rank with all elements initialized to 1
     matrix rank(m_length, 1, 1);
-    matrix test(m_length, 1, 2);
-    matrix temp;
 
-    while (rank != test)
+    while (transition * rank != rank)
     {
-        test = rank;
-        temp = transition;
-        temp *= rank;
-        rank = temp;
+        rank = transition * rank;
     }
 
     // add all the numbers in the column add divide each number by the sum

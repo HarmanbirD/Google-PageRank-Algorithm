@@ -175,7 +175,7 @@ bool operator==(const matrix& hs, const matrix& rhs)
         for (int j = 0; j < hs.m_width; ++j)
         {
             double difference = hs.matrix_array[hs.index(i, j)] - rhs.matrix_array[hs.index(i, j)];
-            if (!(difference) <= std::numeric_limits<double>::epsilon() * fabs(hs.matrix_array[hs.index(i, j)]))
+            if (!(difference) <= epsilon * fabs(hs.matrix_array[hs.index(i, j)]))
             {
                 return false;
             }
