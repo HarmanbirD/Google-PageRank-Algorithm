@@ -29,4 +29,5 @@ int main()
     }
 
     auto * j = new connectivity_matrix(matrix_double, size);
+
 }

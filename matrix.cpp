@@ -13,7 +13,10 @@ matrix::matrix()
         matrix_array{new double[1 * 1] {0.0}}
 {}
 
-matrix::matrix(int n)
+// constructor that takes an int value which is the dimension of the matrix
+// sets m_length and m_width to n
+// Creates matrix of size n * n, initialized to 0.0
+matrix::matrix(const int n)
     :   m_length{n},
         m_width{n},
         matrix_array{new double[n * n] {0.0}}
@@ -24,7 +27,10 @@ matrix::matrix(int n)
     }
 }
 
-matrix::matrix(int r, int c)
+// constructor that takes an int value for rows and columns
+// sets m_length to r and m_width to c
+// Creates matrix of size r * c, initialized to 0.0
+matrix::matrix(const int r, const int c)
     :   m_length{r},
         m_width{c},
         matrix_array{new double[r * c] {0.0}}
@@ -35,9 +41,14 @@ matrix::matrix(int r, int c)
     }
 }
 
-matrix::matrix(double mat_array[], int capacity)
+// constructor that takes an array that's size is able to be square rooted
+// also takes an int that contains the size of the array
+// sets m_length and m_width to square root of capacity
+// creates matrix of size capacity, initialized to 0.0
+matrix::matrix(const double mat_array[], const int capacity)
 {
 
+    // checks if capacity(size of mat_array) is a perfect square
     if (!is_perfect_square(capacity))
     {
         throw std::invalid_argument("array size is not a perfect square");
@@ -49,6 +60,7 @@ matrix::matrix(double mat_array[], int capacity)
     m_length = size;
     m_width  = size;
 
+    // copies mat_array into matrix_array
     for (int i = 0; i < size; ++i)
     {
         for (int j = 0; j < size; ++j)
@@ -58,15 +70,20 @@ matrix::matrix(double mat_array[], int capacity)
     }
 }
 
+// copy constructor
+// copies all variables from matrix_t to this
 matrix::matrix(const matrix& matrix_t)
     :   m_length{matrix_t.m_length},
         m_width{matrix_t.m_width},
-        matrix_array{new double[m_length * m_width] {}}
+        matrix_array{new double[matrix_t.m_length * matrix_t.m_width] {}}
 {
     std::copy(matrix_t.matrix_array, matrix_t.matrix_array + (m_length * m_width), matrix_array);
 }
 
-matrix::matrix(int r, int c, double default_value)
+// constructor that takes an int value for rows and columns
+// sets m_length to r and m_width to c
+// Creates matrix of size r * c, initialized to default_value
+matrix::matrix(const int r, const int c, const double default_value)
         :   m_length{r},
             m_width{c},
             matrix_array{new double[r * c] {}}
@@ -79,8 +96,8 @@ matrix::matrix(int r, int c, double default_value)
     std::fill_n(matrix_array, r * c, default_value);
 }
 
-
-void matrix::set_value(int row, int column, double value)
+// sets matrix[row, column] to value
+void matrix::set_value(const int row, const int column, const double value)
 {
     if(row < 0 || column < 0)
     {
@@ -95,7 +112,8 @@ void matrix::set_value(int row, int column, double value)
     matrix_array[index(row, column)] = value;
 }
 
-double matrix::get_value(int row, int column) const
+// returns the value of matrix[row, column]
+double matrix::get_value(const int row, const int column) const
 {
     if(row < 0 || column < 0)
     {
@@ -110,6 +128,7 @@ double matrix::get_value(int row, int column) const
     return matrix_array[index(row, column)];
 }
 
+// sets all elements in matrix_array to 0.0
 void matrix::clear()
 {
     for (int i = 0; i < m_length; i++)
@@ -121,23 +140,29 @@ void matrix::clear()
     }
 }
 
-int matrix::index(int x, int y) const
+// returns index of a 1d array from a 2d array arguments
+int matrix::index(const int x, const int y) const
 {
     return m_width * x + y;
 }
 
-bool matrix::is_perfect_square(int x) const
+// returns true if x is a perfect square, else false
+bool matrix::is_perfect_square(const int x) const
 {
     double squared = sqrt(x);
 
     return ((squared - floor(squared)) == 0);
 }
 
+// destructor
+// deletes matrix_array which is a dynamically allocated array
 matrix::~matrix()
 {
         delete[] matrix_array;
 }
 
+// overloaded equality operator
+// returns true if both matrices are the same size and contain the same values at each index, else false
 bool operator==(const matrix& hs, const matrix& rhs)
 {
     if (hs.m_width != rhs.m_width || hs.m_length != rhs.m_length)
@@ -336,7 +361,7 @@ int matrix::get_m_width() const
     return m_width;
 }
 
-void matrix::multiply_constant(double value)
+void matrix::multiply_constant(const double value)
 {
     for (int i = 0; i < m_length; ++i)
     {
@@ -392,6 +417,7 @@ void matrix::make_percentage()
     }
 }
 
+//
 void matrix::print_result()
 {
     char current_alpha = 'A';

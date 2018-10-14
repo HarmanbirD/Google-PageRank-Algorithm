@@ -17,13 +17,13 @@ constexpr int percentage{100};
 class matrix {
     public:
         matrix();
-        explicit matrix(int n);
-        matrix(int r, int c);
-        matrix(double mat_array[], int capacity);
+        explicit matrix(const int n);
+        matrix(const int r, const int c);
+        matrix(const double mat_array[], const int capacity);
         matrix(const matrix& matrix_t);
-        matrix(int r, int c, double default_value);
-        void set_value(int row, int column, double value);
-        double get_value(int row, int column) const;
+        matrix(const int r, const int c, const double default_value);
+        void set_value(const int row, const int column, const double value);
+        double get_value(const int row, const int column) const;
         void clear();
         ~matrix();
         friend bool operator==(const matrix& hs, const matrix& rhs);
@@ -41,7 +41,7 @@ class matrix {
         matrix& operator-=(const matrix& rhs);
         matrix& operator*=(const matrix& rhs);
         matrix& operator=(matrix other);
-        void multiply_constant(double value);
+        void multiply_constant(const double value);
         void add_columns();
         void make_percentage();
         void print_result();
@@ -58,7 +58,5 @@ private:
         int get_m_width() const;
         double *getMatrix_array() const;
         int get_m_length() const;
-        inline int index(int x, int y) const;
+        inline int index(const int x, const int y) const;
 };
-
-
