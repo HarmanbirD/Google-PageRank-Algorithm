@@ -221,9 +221,14 @@ matrix operator-(matrix hs, const matrix rhs)
 }
 
 // overloaded multiplication operator
-// multiplies both matrices
+// multiplies both matrices is number of columns in first equals number of rows in the second
 matrix operator*(matrix hs, const matrix rhs)
 {
+    if (hs.m_width != rhs.m_length)
+    {
+        throw std::invalid_argument("number of columns of first matrix does not equal number of rows in second matrix");
+    }
+
     matrix temp = matrix(hs);
 
     temp *= rhs;
@@ -276,7 +281,8 @@ matrix matrix::operator--(int)
     return tmp;
 }
 
-
+// overloaded += operator
+// adds the 2 matrices if they are the same size
 matrix& matrix::operator+=(const matrix& rhs)
 {
     if (m_length != rhs.m_length || m_width != rhs.m_width)
@@ -294,6 +300,8 @@ matrix& matrix::operator+=(const matrix& rhs)
     return *this;
 }
 
+// overloaded -= operator
+// subtracts the 2 matrices if they are the same size
 matrix& matrix::operator-=(const matrix& rhs)
 {
     if (m_length != rhs.m_length || m_width != rhs.m_width)
@@ -311,6 +319,8 @@ matrix& matrix::operator-=(const matrix& rhs)
     return *this;
 }
 
+// overloaded *= operator
+// multiplies both matrices is number of columns in first equals number of rows in the second
 matrix& matrix::operator*=(const matrix& rhs)
 {
     if (this -> m_width != rhs.m_length)
@@ -340,12 +350,14 @@ matrix& matrix::operator*=(const matrix& rhs)
     return *this;
 }
 
+// overloaded assignment operator
 matrix& matrix::operator=(matrix other)
 {
     swap(*this, other);
     return *this;
 }
 
+// overloaded swap function
 void swap(matrix& first, matrix& second)
 {
     using std::swap;
@@ -354,6 +366,7 @@ void swap(matrix& first, matrix& second)
     swap(first.matrix_array, second.matrix_array);
 }
 
+// overloaded insertion operator
 std::ostream &operator<<(std::ostream &os, const matrix &matrix)
 {
     for (int i = 0; i < matrix.m_length; ++i)
@@ -367,16 +380,19 @@ std::ostream &operator<<(std::ostream &os, const matrix &matrix)
     return os;
 }
 
+// returns m_length
 int matrix::get_m_length() const
 {
     return m_length;
 }
 
+// returns m_width
 int matrix::get_m_width() const
 {
     return m_width;
 }
 
+// multiples each element in a matrix by a single value(value passed in)
 void matrix::multiply_constant(const double value)
 {
     for (int i = 0; i < m_length; ++i)
@@ -388,6 +404,8 @@ void matrix::multiply_constant(const double value)
     }
 }
 
+// adds each column in the matrix and then divides every number in the column by the sum
+// if sum is 0 then sets every value in the column to 1 / n (n is the number of columns)
 void matrix::add_columns()
 {
     for (int i = 0; i < m_width; ++i)
@@ -416,10 +434,12 @@ void matrix::add_columns()
     }
 }
 
+// returns matrix_array
 double *matrix::getMatrix_array() const {
     return matrix_array;
 }
 
+// makes every element in the matrix into a percentage out of 100
 void matrix::make_percentage()
 {
     for (int i = 0; i < m_length; ++i)
@@ -433,7 +453,7 @@ void matrix::make_percentage()
     }
 }
 
-//
+// prints the page rank
 void matrix::print_result()
 {
     char current_alpha = 'A';
