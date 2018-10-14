@@ -4,10 +4,16 @@
 
 #include "connectivity_matrix.hpp"
 
+// default constructor
+// calls supers default constructor
 connectivity_matrix::connectivity_matrix()
     :   matrix()
 {}
 
+// constructor that takes a double array and the size of the array
+// checks to see if the array is a connectivity matrix by checking if every element is a 0 or a 1
+// calls the supers constructor that takes an array and size
+// calls the markov_process
 connectivity_matrix::connectivity_matrix(const double *matrix_array, const int size)
     :   matrix(matrix_array, size)
 {
@@ -21,6 +27,7 @@ connectivity_matrix::connectivity_matrix(const double *matrix_array, const int s
     markov_process(transition(stochastic()));
 }
 
+// returns a matrix that is a left stochastic matrix
 matrix connectivity_matrix::stochastic()
 {
     int m_length = get_m_length();
@@ -36,6 +43,8 @@ matrix connectivity_matrix::stochastic()
     return S;
 }
 
+// returns a transition matrix
+// takes in a stochastic matrix
 matrix connectivity_matrix::transition(const matrix stochastic) {
     int m_length = get_m_length();
     int m_width  = get_m_width();
@@ -58,6 +67,7 @@ matrix connectivity_matrix::transition(const matrix stochastic) {
     return M;
 }
 
+// performs the markov_process on the transition matrix passed in
 void connectivity_matrix::markov_process(const matrix transition) {
     int m_length = get_m_length();
     matrix rank(m_length, 1, 1);
