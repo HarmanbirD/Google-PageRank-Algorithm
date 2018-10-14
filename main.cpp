@@ -21,13 +21,15 @@ int main()
 
     size_t size = temp_vector.size();
 
-    auto * matrix_double = new double [size] {};
+    double * matrix_double = new double [size]; {};
 
     for (size_t i = 0; i < size; ++i)
     {
         matrix_double[i] = temp_vector.at(i);
     }
 
-    auto * j = new connectivity_matrix(matrix_double, size);
+    matrix * j = new connectivity_matrix(matrix_double, size);
+
+    ((connectivity_matrix*)j)->markov_process(((connectivity_matrix*)j)->transition(((connectivity_matrix*)j)->stochastic()));
 
 }
