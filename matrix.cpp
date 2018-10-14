@@ -184,11 +184,14 @@ bool operator==(const matrix& hs, const matrix& rhs)
     return true;
 }
 
+// overloaded equality operator
 bool operator!=(const matrix& hs, const matrix& rhs)
 {
     return !operator==(hs, rhs);
 }
 
+// overloaded addition operator
+// adds the 2 matrices if they are the same size
 matrix operator+(matrix hs, const matrix rhs)
 {
     if (hs.m_length != rhs.m_length || hs.m_width != rhs.m_width)
@@ -202,6 +205,8 @@ matrix operator+(matrix hs, const matrix rhs)
     return temp;
 }
 
+// overloaded minus operator
+// subtracts the two matrices if they are the same size
 matrix operator-(matrix hs, const matrix rhs)
 {
     if (hs.m_length != rhs.m_length || hs.m_width != rhs.m_width)
@@ -215,6 +220,8 @@ matrix operator-(matrix hs, const matrix rhs)
     return temp;
 }
 
+// overloaded multiplication operator
+// multiplies both matrices
 matrix operator*(matrix hs, const matrix rhs)
 {
     matrix temp = matrix(hs);
@@ -223,6 +230,8 @@ matrix operator*(matrix hs, const matrix rhs)
     return temp;
 }
 
+// overloaded pre-increment operator
+// increments each element by 1
 matrix& matrix::operator++()
 {
     for (int i = 0; i < m_length; i++)
@@ -235,6 +244,8 @@ matrix& matrix::operator++()
     return *this;
 }
 
+// overloaded post-increment operator
+// increments each element by 1
 matrix matrix::operator++(int)
 {
     matrix tmp{*this};
@@ -242,6 +253,8 @@ matrix matrix::operator++(int)
     return tmp;
 }
 
+// overloaded pre-decrement operator
+// decrements each element by 1
 matrix& matrix::operator--()
 {
     for (int i = 0; i < m_length; i++)
@@ -254,12 +267,15 @@ matrix& matrix::operator--()
     return *this;
 }
 
+// overloaded post-decrement operator
+// decrements each element by 1
 matrix matrix::operator--(int)
 {
     matrix tmp{*this};
     operator--();
     return tmp;
 }
+
 
 matrix& matrix::operator+=(const matrix& rhs)
 {
