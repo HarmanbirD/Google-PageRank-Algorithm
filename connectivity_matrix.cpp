@@ -50,6 +50,7 @@ matrix connectivity_matrix::transition(const matrix stochastic) {
     matrix S(stochastic);
     // makes an array of elements that are 1/n
     matrix Q(m_length, m_width, 1.0 / m_length);
+
     // transitive matrix
     matrix M(m_length);
 
