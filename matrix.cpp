@@ -435,7 +435,8 @@ void matrix::add_columns()
 }
 
 // returns matrix_array
-double *matrix::getMatrix_array() const {
+double *matrix::getMatrix_array() const
+{
     return matrix_array;
 }
 
