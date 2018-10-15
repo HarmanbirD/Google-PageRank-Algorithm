@@ -373,7 +373,7 @@ std::ostream &operator<<(std::ostream &os, const matrix &matrix)
     {
         for (int j = 0; j < matrix.m_width; ++j)
         {
-            os << matrix.matrix_array[matrix.index(i, j)] << " ";
+            os << matrix.get_value(i, j) << " ";
         }
         os << std::endl;
     }

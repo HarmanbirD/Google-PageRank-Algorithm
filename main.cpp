@@ -21,7 +21,7 @@ int main()
 
     size_t size = temp_vector.size();
 
-    double * matrix_double = new double [size]; {};
+    auto * matrix_double = new double [size]; {};
 
     for (size_t i = 0; i < size; ++i)
     {
@@ -29,6 +29,8 @@ int main()
     }
 
     matrix * j = new connectivity_matrix(matrix_double, size);
+
+    std::cout << *j << std::endl;
 
     ((connectivity_matrix*)j)->markov_process(((connectivity_matrix*)j)->transition(((connectivity_matrix*)j)->stochastic()));
 
