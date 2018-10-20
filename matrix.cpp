@@ -30,7 +30,8 @@ matrix::matrix(const int n)
 // constructor that takes an int value for rows and columns
 // sets m_length to r and m_width to c
 // Creates matrix of size r * c, initialized to 0.0
-matrix::matrix(const int r, const int c)
+matrix::matrix(const int r,
+               const int c)
     :   m_length{r},
         m_width{c},
         matrix_array{new double[r * c] {0.0}}
@@ -45,16 +46,16 @@ matrix::matrix(const int r, const int c)
 // also takes an int that contains the size of the array
 // sets m_length and m_width to square root of capacity
 // creates matrix of size capacity, initialized to 0.0
-matrix::matrix(const double mat_array[], const int capacity)
+matrix::matrix(const double mat_array[],
+               const int capacity)
 {
-
     // checks if capacity(size of mat_array) is a perfect square
     if (!is_perfect_square(capacity))
     {
         throw std::invalid_argument("array size is not a perfect square");
     }
 
-    int size = sqrt(capacity);
+    auto size = (int) sqrt(capacity);
 
     matrix_array = new double[capacity];
     m_length = size;
@@ -83,7 +84,9 @@ matrix::matrix(const matrix& matrix_t)
 // constructor that takes an int value for rows and columns
 // sets m_length to r and m_width to c
 // Creates matrix of size r * c, initialized to default_value
-matrix::matrix(const int r, const int c, const double default_value)
+matrix::matrix(const int r,
+               const int c,
+               const double default_value)
         :   m_length{r},
             m_width{c},
             matrix_array{new double[r * c] {}}
@@ -97,7 +100,9 @@ matrix::matrix(const int r, const int c, const double default_value)
 }
 
 // sets matrix[row, column] to value
-void matrix::set_value(const int row, const int column, const double value)
+void matrix::set_value(const int row,
+                       const int column,
+                       const double value)
 {
     if(row < 0 || column < 0)
     {
@@ -113,7 +118,8 @@ void matrix::set_value(const int row, const int column, const double value)
 }
 
 // returns the value of matrix[row, column]
-double matrix::get_value(const int row, const int column) const
+double matrix::get_value(const int row,
+                         const int column) const
 {
     if(row < 0 || column < 0)
     {
@@ -135,13 +141,14 @@ void matrix::clear()
     {
         for (int j = 0; j < m_width; j++)
         {
-            matrix_array[index(i, j)] = 0.0;
+            set_value(i, j, 0.0);
         }
     }
 }
 
 // returns index of a 1d array from a 2d array arguments
-int matrix::index(const int x, const int y) const
+int matrix::index(const int x,
+                  const int y) const
 {
     return m_width * x + y;
 }
@@ -163,7 +170,8 @@ matrix::~matrix()
 
 // overloaded equality operator
 // returns true if both matrices are the same size and contain the same values at each index, else false
-bool operator==(const matrix& hs, const matrix& rhs)
+bool operator==(const matrix& hs,
+                const matrix& rhs)
 {
     if (hs.m_width != rhs.m_width || hs.m_length != rhs.m_length)
     {
@@ -175,7 +183,7 @@ bool operator==(const matrix& hs, const matrix& rhs)
         for (int j = 0; j < hs.m_width; ++j)
         {
             double difference = hs.matrix_array[hs.index(i, j)] - rhs.matrix_array[hs.index(i, j)];
-            if (difference > epsilon * fabs(hs.matrix_array[hs.index(i, j)]))
+            if (fabs(difference) > epsilon * fabs(hs.matrix_array[hs.index(i, j)]))
             {
                 return false;
             }
@@ -185,54 +193,52 @@ bool operator==(const matrix& hs, const matrix& rhs)
 }
 
 // overloaded equality operator
-bool operator!=(const matrix& hs, const matrix& rhs)
+bool operator!=(const matrix& hs,
+                const matrix& rhs)
 {
     return !operator==(hs, rhs);
 }
 
 // overloaded addition operator
 // adds the 2 matrices if they are the same size
-matrix operator+(matrix hs, const matrix rhs)
+matrix operator+(matrix hs,
+                 const matrix rhs)
 {
     if (hs.m_length != rhs.m_length || hs.m_width != rhs.m_width)
     {
         throw std::invalid_argument("matrices have to be the same size");
     }
 
-    matrix temp = matrix(hs);
-
-    temp += rhs;
-    return temp;
+    hs += rhs;
+    return hs;
 }
 
 // overloaded minus operator
 // subtracts the two matrices if they are the same size
-matrix operator-(matrix hs, const matrix rhs)
+matrix operator-(matrix hs,
+                 const matrix rhs)
 {
     if (hs.m_length != rhs.m_length || hs.m_width != rhs.m_width)
     {
         throw std::invalid_argument("matrices have to be the same size");
     }
 
-    matrix temp = matrix(hs);
-
-    temp -= rhs;
-    return temp;
+    hs -= rhs;
+    return hs;
 }
 
 // overloaded multiplication operator
 // multiplies both matrices is number of columns in first equals number of rows in the second
-matrix operator*(matrix hs, const matrix rhs)
+matrix operator*(matrix hs,
+                 const matrix rhs)
 {
     if (hs.m_width != rhs.m_length)
     {
         throw std::invalid_argument("number of columns of first matrix does not equal number of rows in second matrix");
     }
 
-    matrix temp = matrix(hs);
-
-    temp *= rhs;
-    return temp;
+    hs *= rhs;
+    return hs;
 }
 
 // overloaded pre-increment operator
@@ -243,7 +249,7 @@ matrix& matrix::operator++()
     {
         for (int j = 0; j < m_width; j++)
         {
-            matrix_array[index(i, j)] += 1.0;
+            set_value(i, j, get_value(i, j) + 1);
         }
     }
     return *this;
@@ -266,7 +272,7 @@ matrix& matrix::operator--()
     {
         for (int j = 0; j < m_width; j++)
         {
-            matrix_array[index(i, j)] -= 1.0;
+            set_value(i, j, get_value(i, j) - 1);
         }
     }
     return *this;
@@ -358,7 +364,8 @@ matrix& matrix::operator=(matrix other)
 }
 
 // overloaded swap function
-void swap(matrix& first, matrix& second)
+void swap(matrix& first,
+          matrix& second)
 {
     using std::swap;
     swap(first.m_length, second.m_length);
@@ -367,7 +374,8 @@ void swap(matrix& first, matrix& second)
 }
 
 // overloaded insertion operator
-std::ostream &operator<<(std::ostream &os, const matrix &matrix)
+std::ostream &operator<<(std::ostream &os,
+                         const matrix &matrix)
 {
     for (int i = 0; i < matrix.m_length; ++i)
     {
@@ -448,7 +456,8 @@ void matrix::make_percentage()
         for (int j = 0; j < m_width; ++j)
         {
             double temp = get_value(i, j) * percentage;
-            temp = roundf(temp * percentage) / percentage;
+            float percent = (float) temp * percentage;
+            temp = roundf(percent) / percentage;
             set_value(i, j, temp);
         }
     }

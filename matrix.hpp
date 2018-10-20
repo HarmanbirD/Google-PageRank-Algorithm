@@ -13,7 +13,7 @@
 #include <iomanip>
 
 constexpr int percentage{100};
-constexpr double epsilon{0.0001};
+constexpr double epsilon{0.00001};
 
 class matrix {
     public:

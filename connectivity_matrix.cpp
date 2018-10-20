@@ -13,7 +13,8 @@ connectivity_matrix::connectivity_matrix()
 // constructor that takes a double array and the size of the array
 // checks to see if the array is a connectivity matrix by checking if every element is a 0 or a 1
 // calls the supers constructor that takes an array and size
-connectivity_matrix::connectivity_matrix(const double *matrix_array, const int size)
+connectivity_matrix::connectivity_matrix(const double *matrix_array,
+                                         const int size)
     :   matrix(matrix_array, size)
 {
     for (int i = 0; i < size; ++i)
