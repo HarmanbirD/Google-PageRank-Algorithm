@@ -4,6 +4,7 @@
 #include "matrix.hpp"
 #include "connectivity_matrix.hpp"
 
+// reads from file and puts contents in a vector
 std::vector<double> read_file_to_vector()
 {
     std::ifstream my_file;
@@ -21,6 +22,7 @@ std::vector<double> read_file_to_vector()
     return temp_vector;
 }
 
+// converts a vector into a double*, returns the double*
 double* vector_to_array(std::vector<double> temp_vector)
 {
     size_t size = temp_vector.size();
@@ -34,6 +36,7 @@ double* vector_to_array(std::vector<double> temp_vector)
     return matrix_double;
 }
 
+// main
 int main()
 {
     std::vector<double> temp_vector = read_file_to_vector();
