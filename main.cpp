@@ -40,7 +40,7 @@ int main()
 
     auto * matrix_double = vector_to_array(temp_vector);
 
-    matrix * j = new connectivity_matrix(matrix_double, temp_vector.size());
+    matrix * j = new connectivity_matrix(matrix_double, (int) temp_vector.size());
 
     ((connectivity_matrix*)j)->markov_process(((connectivity_matrix*)j)->transition(((connectivity_matrix*)j)->stochastic()));
 }
